@@ -1,30 +1,62 @@
 from Observer import *
+import pickle
+
+# NOT MY CODE
+# takenfrom:
+# https://stackoverflow.com/questions/26835477/pickle-load-variable-if-exists-or-create-and-save-it
+# Wednesday, 01/29/2020
+# Scott Bing
+#
+# prime the pickle file first time
+def read_or_new_pickle(path, default):
+    try:
+        with open(path, "rb") as f:
+            foo = pickle.load(f)
+    except Exception:
+        foo = default
+        with open(path, "wb") as f:
+            pickle.dump(foo, f)
+    return foo
+
+# prime the three sensor files
+read_or_new_pickle(path="pressure.dat", default=0)
+read_or_new_pickle(path="temperature.dat", default=0)
 
 
 class PressureListener(AbstractListener):
-    _pressure = 0   # static variable
+    _pressure = 0    # static variable
 
     def notify(self, event):
         val = event.split(',')[0]
+        PressureListener._pressure = pickle.load(open("pressure.dat", "rb"))
+        print("PressureListener._pressure = ", PressureListener._pressure)
+        print("val = ", val)
         if val != PressureListener._pressure:
             print(self.name, "Current Barometric Pressure is", val, "atms.")
-            PressureListener._pressure = val
+            pickle.dump(val, open("pressure.dat", "wb"))
+
+
 # end class PressureListener(AbstractListener):
 
 
 class TemperatureListener(AbstractListener):
-    _temperature = 0    # static variable
+    _temperature = 0  # static variable
 
     def notify(self, event):
-        val = event.split(',')[1]
+        val = event.split(',')[0]
+        TemperatureListener._temperature = pickle.load(open("temperature.dat", "rb"))
+        print("TemperatureListener._temperature = ", TemperatureListener._temperature)
+        print("val = ", val)
         if val != TemperatureListener._temperature:
             print(self.name, "Current Temperature is ", val, " degrees F.")
-            TemperatureListener._temperature = val
+            pickle.dump(val, open("temperature.dat", "wb"))
+
+
 # end class TemperatureListener(AbstractListener):
 
 
 class WindListener(AbstractListener):
-    _wind = None   # static variable
+    _wind = None  # static variable
 
     def notify(self, event):
         val = event.split(',')[2]
