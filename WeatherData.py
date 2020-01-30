@@ -19,12 +19,14 @@ def read_or_new_pickle(path, default):
     return foo
 
 # prime the three sensor files
-read_or_new_pickle(path="pressure.dat", default=0)
-read_or_new_pickle(path="temperature.dat", default=0)
+#read_or_new_pickle(path="pressure.dat", default=0)
+#read_or_new_pickle(path="temperature.dat", default=0)
+#read_or_new_pickle(path="wind.dat", default=0)
 
 
 class PressureListener(AbstractListener):
     _pressure = 0    # static variable
+    #read_or_new_pickle(path="pressure.dat", default=0)
 
     def notify(self, event):
         val = event.split(',')[0]
@@ -41,9 +43,10 @@ class PressureListener(AbstractListener):
 
 class TemperatureListener(AbstractListener):
     _temperature = 0  # static variable
+    #read_or_new_pickle(path="temperature.dat", default=0)
 
     def notify(self, event):
-        val = event.split(',')[0]
+        val = event.split(',')[1]
         TemperatureListener._temperature = pickle.load(open("temperature.dat", "rb"))
         print("TemperatureListener._temperature = ", TemperatureListener._temperature)
         print("val = ", val)
@@ -56,11 +59,17 @@ class TemperatureListener(AbstractListener):
 
 
 class WindListener(AbstractListener):
-    _wind = None  # static variable
+    _wind = 0  # static variable
+    #read_or_new_pickle(path="wind.dat", default=0)
 
     def notify(self, event):
         val = event.split(',')[2]
+        WindListener._wind = pickle.load(open("wind.dat", "rb"))
+        print("WindListener._wind = ", WindListener._wind)
+        print("val = ", val)
         if val != WindListener._wind:
             print(self.name, "Current Wind Direction is from the", val.capitalize())
-            WindListener._wind = val
+            pickle.dump(val, open("wind.dat", "wb"))
+
+
 # end class WindListener(AbstractListener):
