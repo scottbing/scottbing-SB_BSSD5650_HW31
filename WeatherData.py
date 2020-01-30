@@ -2,31 +2,33 @@ from Observer import *
 
 
 class PressureListener(AbstractListener):
-
+    _pressure = 0   # static variable
 
     def notify(self, event):
         val = event.split(',')[0]
-        print(self.name, "Current Barometric Pressure is", val, "atms.")
+        if val != PressureListener._pressure:
+            print(self.name, "Current Barometric Pressure is", val, "atms.")
+            PressureListener._pressure = val
 # end class PressureListener(AbstractListener):
 
 
 class TemperatureListener(AbstractListener):
-    def __init__(self, temperature=0):
-        self.temperature = temperature
+    _temperature = 0    # static variable
 
     def notify(self, event):
         val = event.split(',')[1]
-        # save old temperature value
-        self.temperature = val
-        if self.temperature == val:
-            print(self.name, "Current Temperature is ", self.temperature, " degrees F.")
-        else:
+        if val != TemperatureListener._temperature:
             print(self.name, "Current Temperature is ", val, " degrees F.")
+            TemperatureListener._temperature = val
 # end class TemperatureListener(AbstractListener):
 
 
 class WindListener(AbstractListener):
+    _wind = None   # static variable
+
     def notify(self, event):
         val = event.split(',')[2]
-        print(self.name, "Current Wind Direction is from the", val.capitalize())
+        if val != WindListener._wind:
+            print(self.name, "Current Wind Direction is from the", val.capitalize())
+            WindListener._wind = val
 # end class WindListener(AbstractListener):
