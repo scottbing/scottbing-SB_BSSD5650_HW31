@@ -31,8 +31,8 @@ class PressureListener(AbstractListener):
     def notify(self, event):
         val = event.split(',')[0]
         PressureListener._pressure = pickle.load(open("pressure.dat", "rb"))
-        print("PressureListener._pressure = ", PressureListener._pressure)
-        print("val = ", val)
+        # print("PressureListener._pressure = ", PressureListener._pressure)
+        # print("val = ", val)
         if val != PressureListener._pressure:
             print(self.name, "Current Barometric Pressure is", val, "atms.")
             pickle.dump(val, open("pressure.dat", "wb"))
@@ -48,8 +48,8 @@ class TemperatureListener(AbstractListener):
     def notify(self, event):
         val = event.split(',')[1]
         TemperatureListener._temperature = pickle.load(open("temperature.dat", "rb"))
-        print("TemperatureListener._temperature = ", TemperatureListener._temperature)
-        print("val = ", val)
+        # print("TemperatureListener._temperature = ", TemperatureListener._temperature)
+        # print("val = ", val)
         if val != TemperatureListener._temperature:
             print(self.name, "Current Temperature is ", val, " degrees F.")
             pickle.dump(val, open("temperature.dat", "wb"))
@@ -65,8 +65,8 @@ class WindListener(AbstractListener):
     def notify(self, event):
         val = event.split(',')[2]
         WindListener._wind = pickle.load(open("wind.dat", "rb"))
-        print("WindListener._wind = ", WindListener._wind)
-        print("val = ", val)
+        # print("WindListener._wind = ", WindListener._wind)
+        # print("val = ", val)
         if val != WindListener._wind:
             print(self.name, "Current Wind Direction is from the", val.capitalize())
             pickle.dump(val, open("wind.dat", "wb"))
